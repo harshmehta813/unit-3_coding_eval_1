@@ -8,6 +8,7 @@
 </head>
 <body>
     <form id = "input">
+        <div><input name="id" type="number" id="id" placeholder="ID" /></div>
         <div><input name="name" type="text" id="name" placeholder="Name"/></div>
         <div><input name="price" type="number" id="price" placeholder="Price"/></div>
         <div><input name="currency" type="text" id="currency" placeholder="Currency"/></div>
@@ -18,8 +19,12 @@
 
     </div>
     <script type="text/javaScript">
+        window.addEventListener("load", function(){
+            const form = document.getElementById("form");
+            form.addEventListener("submit", handleSubmit);
+        })
         let data = [];
-        function getProducts(){
+        function getPosts(){
             return fetch("http://localhost:3001/products")
             .then(function(response){
                 console.log(response)
@@ -30,21 +35,75 @@
             })
         }
 
-        function createProducts(data){
+        function createPost(post){
             const container = document.getElementById("container");
             container.innerHTML = " "
             const div = document.createElement("div");
             const row = document.createElement("div");
-            for(let product of data){
-                const card = createCard(product);
+            for(let post of data){
+                const card = createCard(post);
                 div.append(card);
             }
             container.append(div);
         }
 
-        function createCard(data) {
+        function createCard(post) {
             const div = document.createElement("div");
-            div.className = "card-cont";
+            div.className = "post-cont";
+            const id = document.createElement("id");
+            id.textContent = post.id;
+            const name = document.createElement("name");
+            name.textContent = post.name;
+            const price = document.createElement("price");
+            price.textContent = post.price;
+            const currency = document.createElement("currency");
+            currency.textContent = post.currency;
+            const qty = document.createElement("qty");
+            qty.textContent = post.qty;
+
+            div.append(id, name, price, currency, qty);
+            return div;
+        }
+
+        async function fetchPosts(){
+            try {
+                const results = await getPosts();
+                createPost(results)
+            }
+            catch(e) {
+
+            }
+        }
+        fetchPosts()
+
+        function createPost(data) {
+            const config = {
+                method: 'POST',
+                Headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+        }
+
+        async function handleSubmit(){
+            try{
+                event.preventDefault();
+                const form = document.getElementById("form");
+                const formData = new FormData(form);
+                const id = formData.get("id");
+                const name = formData.get("name");
+                const price = formData.get("price");
+                const currency = formData.get("currency");
+                const qty = formData.get("qty");
+
+                const response = await createPost({id, name, price, currency, qty})
+                await fetchPosts();
+                console.log(response);
+            }
+            catch (err) {
+
+            }
         }
     </script>
 </body>

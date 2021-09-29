@@ -5,6 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
+    <style>
+        #container > div {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1;
+            gap: 1rem;
+        }
+        .card-container {
+            padding: 0.5rem;
+            border: 1px solid black;
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .card-container > div {
+            padding: 0.5rem;
+        }
+        #ten-items {
+            display: flex;
+            width: 100%;
+            margin: auto;
+        }
+        #ten-items > class {
+            display: flex;
+            flex-wrap: wrap;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
     <form id = "input">
@@ -15,13 +42,85 @@
         <div><input name="qty" type="number" id="qty" placeholder="Available QTY"/></div>
         <div><input type="submit" value="submit" /></div>
     </form>
+    <div id = "ten-items">
+        <div class="item">
+            ID: 1
+            Name: Bat
+            Price: ₹1200
+            Currency: INR
+            Available QTY: 5
+        </div>
+        <div class="item">
+            ID: 2
+            Name: Ball
+            Price: ₹90
+            Currency: INR
+            Available QTY: 24
+        </div>
+        <div class="item">
+            ID: 3
+            Name: Stumps
+            Price: ₹300
+            Currency: INR
+            Available QTY: 30
+        </div>
+        <div class="item">
+            ID: 4
+            Name: Gloves
+            Price: ₹220
+            Currency: INR
+            Available QTY: 10
+        </div>
+        <div class="item">
+            ID: 5
+            Name: Helmet
+            Price: ₹800
+            Currency: INR
+            Available QTY: 5
+        </div>
+        <div class="item">
+            ID: 6
+            Name: Pad
+            Price: ₹500
+            Currency: INR
+            Available QTY: 5
+        </div>
+        <div class="item">
+            ID: 7
+            Name: Kit Bag
+            Price: ₹350
+            Currency: INR
+            Available QTY: 5
+        </div>
+        <div class="item">
+            ID: 8
+            Name: Badminton Racket
+            Price: ₹800
+            Currency: INR
+            Available QTY: 7
+        </div>
+        <div class="item">
+            ID: 9
+            Name: Shuttlecock
+            Price: ₹150
+            Currency: INR
+            Available QTY: 20
+        </div>
+        <div class="item">
+            ID: 10
+            Name: Bat-grip
+            Price: ₹50
+            Currency: INR
+            Available QTY: 50
+        </div>
+    </div>
     <div id="container">
 
     </div>
     <script type="text/javaScript">
         window.addEventListener("load", function(){
             const form = document.getElementById("form");
-            form.addEventListener("submit", handleSubmit);
+            form.addEventListener("submit", handleSubmit());
         })
         let data = [];
         function getPosts(){
@@ -84,7 +183,10 @@
                 },
                 body: JSON.stringify(data)
             }
-        }
+            return fetch("http://localhost:3001/products")
+            .then(function(response) {
+                return response.json()
+            })
 
         async function handleSubmit(){
             try{
@@ -105,6 +207,7 @@
 
             }
         }
+    }
     </script>
 </body>
 </html>
